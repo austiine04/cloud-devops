@@ -1,0 +1,17 @@
+Parameters:
+  EnvironmentName:
+    Description: Will be prefixed to resource names
+    Type: String
+  VpcCIDR:
+    Description: Address range for VPC
+    Default: 10.0.0.0/16
+    Type: String
+Resources:
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCIDR
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Ref EnvironmentName
