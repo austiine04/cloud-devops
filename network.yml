@@ -58,6 +58,18 @@ Resources:
         - Key: Name
           Value: !Sub "${EnvironmentName}-public-subnet-1"
 
+  PublicSubnet1ElasticIp:
+    Type: AWS::EC2::EIP
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      Domain: vpc
+
+  PublicSubnet1NatGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt PublicSubnet1ElasticIp.AllocationId
+      SubnetId: !Ref PublicSubnet1
+
   PublicSubnet2:
     Type: AWS::EC2::Subnet
     Properties:
@@ -68,6 +80,18 @@ Resources:
       Tags:
         - Key: Name
           Value: !Sub "${EnvironmentName}-public-subnet-2"
+
+  PublicSubnet2ElasticIp:
+    Type: AWS::EC2::EIP
+    DependsOn: InternetGatewayAttachment
+    Properties:
+      Domain: vpc
+
+  PublicSubnet2NatGateway:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      AllocationId: !GetAtt PublicSubnet2ElasticIp.AllocationId
+      SubnetId: !Ref PublicSubnet2
 
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
