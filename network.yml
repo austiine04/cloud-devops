@@ -2,10 +2,12 @@ Parameters:
   EnvironmentName:
     Description: Will be prefixed to resource names
     Type: String
+
   VpcCIDR:
     Description: Address range for VPC
     Default: 10.0.0.0/16
     Type: String
+
 Resources:
   Vpc:
     Type: AWS::EC2::VPC
@@ -15,3 +17,16 @@ Resources:
       Tags:
         - Key: Name
           Value: !Ref EnvironmentName
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub "${EnvironmentName}-internet-gateway"
+
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      InternetGatewayId: !Ref InternetGateway
+      VpcId: !Ref Vpc
